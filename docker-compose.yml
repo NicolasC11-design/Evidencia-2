@@ -17,7 +17,7 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: servidor-bd
+    container_name: servidor-flask
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: J0n1cr1b3/
