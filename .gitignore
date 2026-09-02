@@ -1,0 +1,30 @@
+# Entornos virtuales
+venv/
+env/
+.venv/
+ENV/
+
+# Python bytecode y cachés
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+
+# Archivos de configuración y secretos (Crucial para el .env)
+.env
+.env.local
+.env.*
+!.env.example
+
+# IDEs y Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Directorios de datos locales de Docker (Nginx Proxy Manager y certificados)
+npm-data/
+npm-letsencrypt/
