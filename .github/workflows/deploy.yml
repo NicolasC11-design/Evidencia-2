@@ -58,7 +58,7 @@ jobs:
 
       - name: Run Bandit SAST Scan
         run: |
-          bandit -r app/ -ll
+          bandit -r app/ -l
 
       - name: Run Trivy vulnerability scanner in fs mode
         uses: aquasecurity/trivy-action@master
