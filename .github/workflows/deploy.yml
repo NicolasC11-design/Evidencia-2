@@ -30,7 +30,7 @@ jobs:
 
       - name: Run SAST (Bandit)
         run: |
-          bandit -r app/ -ll
+          bandit -r app/ -l
 
       - name: Build Docker Image for Scanning
         run: |
