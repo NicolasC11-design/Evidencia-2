@@ -1,3 +1,4 @@
+# Comentario de prueba para forzar cambio
 FROM python:3.8-slim
 WORKDIR /app
 COPY app/requirements.txt .
