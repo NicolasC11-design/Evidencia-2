@@ -38,3 +38,29 @@ jobs:
           git pull origin main
           sudo docker compose down
           sudo docker compose up -d --build
+security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Bandit
+        run: |
+          pip install bandit
+
+      - name: Run Bandit SAST Scan
+        run: |
+          bandit -r app/ -ll --format custom || true
+          # O usa bandit -r app/ directamente para que falle si encuentra problemas críticos (dependiendo de tu configuración)
+
+      - name: Run Trivy vulnerability scanner in fs mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          severity: 'CRITICAL,HIGH'
