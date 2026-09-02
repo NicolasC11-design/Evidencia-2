@@ -8,22 +8,51 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - DB_HOST=Actividad
-      - DB_USER=root
-      - DB_PASSWORD=J0n1cr1b3/
-      - DB_NAME=actividad-E2
+      - DB_HOST=db
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - app-net
 
   db:
     image: mysql:8.0
     container_name: servidor-flask
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: J0n1cr1b3/
-      MYSQL_DATABASE: actividad-E2
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  npm:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./npm-data:/data
+      - ./npm-letsencrypt:/etc/letsencrypt
+    networks:
+      - app-net
 
 volumes:
   mysql_data:
+
+networks:
+  app-net:
+    name: app-net
+    driver: bridge
